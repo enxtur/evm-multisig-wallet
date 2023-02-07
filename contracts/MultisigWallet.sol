@@ -61,6 +61,8 @@ contract MultisigWallet is AccessControl {
 		TransferProps transferProps;
 		HotWalletProps hotWalletProps;
 		MemberProps memberProps;
+
+		uint256 timestamp;
 	}
 
 	Proposal[] private proposals;
@@ -99,7 +101,8 @@ contract MultisigWallet is AccessControl {
 			new address[](0),
 			TransferProps(token, amount),
 			NULL_HOT_WALLET_PROPS,
-			NULL_MEMBER_PROPS
+			NULL_MEMBER_PROPS,
+			block.timestamp
 		));
 
 		emit TransferProposalSubmitted(id, token, amount);
@@ -117,7 +120,8 @@ contract MultisigWallet is AccessControl {
 			new address[](0),
 			NULL_TRANSFER_PROPS,
 			HotWalletProps(newWallet),
-			NULL_MEMBER_PROPS
+			NULL_MEMBER_PROPS,
+			block.timestamp
 		));
 
 		emit HotWalletProposalSubmitted(id, newWallet);
@@ -135,7 +139,8 @@ contract MultisigWallet is AccessControl {
 			new address[](0),
 			NULL_TRANSFER_PROPS, 
 			NULL_HOT_WALLET_PROPS, 
-			MemberProps(member)
+			MemberProps(member),
+			block.timestamp
 		));
 
 		emit MemberProposalSubmitted(id, member, true);
@@ -153,7 +158,8 @@ contract MultisigWallet is AccessControl {
 			new address[](0),
 			NULL_TRANSFER_PROPS, 
 			NULL_HOT_WALLET_PROPS, 
-			MemberProps(member)
+			MemberProps(member),
+			block.timestamp
 		));
 
 		emit MemberProposalSubmitted(id, member, false);
