@@ -13,7 +13,6 @@ module.exports = function(deployer, network, accounts) {
     console.log("caller: ", caller);
     console.log("members: ", members);
     console.log("network: ", network);
-    console.log("network: ", deployer);
   }
   deployer.deploy(MultisigWallet, members);
 };
