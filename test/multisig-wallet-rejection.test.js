@@ -12,7 +12,7 @@ contract("MultisigWallet Rejection", function (accounts) {
     await instance.submitAddMemberProposal(newMember, { from: accounts[0] });
   });
   it("should have 1 active proposal", async function () {
-    let activeProposals = await instance.getActiveProposals();
+    let activeProposals = await instance.getActiveProposals(0, 1);
     proposal = activeProposals[0];
   });
   it("should reject when 2 of 3 member rejects", async function () {
@@ -20,10 +20,10 @@ contract("MultisigWallet Rejection", function (accounts) {
     await instance.reject(proposal.id, { from: accounts[2] });
   });
   it("should have rejected status", async function () {
-    activeProposals = await instance.getActiveProposals();
+    activeProposals = await instance.getActiveProposals(0, 1);
     assert.equal(0, activeProposals.length, "active proposals should have 0 proposal");
 
-    const rejectedProposals = await instance.getRejectedProposals();
+    const rejectedProposals = await instance.getRejectedProposals(0, 1);
     assert.equal(1, rejectedProposals.length, "rejected proposals should have 1 proposal");
     const [rejectedProposal] = rejectedProposals;
     assert.equal(rejectedProposal.id, proposal.id, "id should be " + proposal.id);

@@ -236,30 +236,41 @@ contract MultisigWallet is AccessControl {
 		}
 		return activeProposalCount;
 	}
+
+	function min(uint256 a, uint256 b) private pure returns (uint256) {
+    return a <= b ? a : b;
+	}
 	
-	function _getProposals(ProposalStatus status) private view returns (Proposal[] memory) {
+	function _getProposals(ProposalStatus status, uint256 skip, uint256 limit) private view returns (Proposal[] memory) {
 		uint256 proposalCount = getProposalCount(status);
-		Proposal[] memory resultProposals = new Proposal[](proposalCount);
+		Proposal[] memory resultProposals = new Proposal[](min(proposalCount - skip, limit));
 		uint256 resultIndex = 0;
 		for (uint256 i = proposals.length; i >= 1; i--) {
 			if (proposals[i - 1].status == status) {
-				resultProposals[resultIndex] = proposals[i - 1];
-				resultIndex++;
+				if (skip > 0) {
+					skip--;
+				} else {
+					resultProposals[resultIndex] = proposals[i - 1];
+					resultIndex++;
+					if (resultIndex == limit) {
+						break;
+					}
+				}
 			}
 		}
 		return resultProposals;
 	}
 
-	function getActiveProposals() public view returns (Proposal[] memory) {
-		return _getProposals(ProposalStatus.ACTIVE);
+	function getActiveProposals(uint256 skip, uint256 limit) public view returns (Proposal[] memory) {
+		return _getProposals(ProposalStatus.ACTIVE, skip, limit);
 	}
 
-	function getExecutedProposals() public view returns (Proposal[] memory) {
-		return _getProposals(ProposalStatus.EXECUTED);
+	function getExecutedProposals(uint256 skip, uint256 limit) public view returns (Proposal[] memory) {
+		return _getProposals(ProposalStatus.EXECUTED, skip, limit);
 	}
 
-	function getRejectedProposals() public view returns (Proposal[] memory) {
-		return _getProposals(ProposalStatus.REJECTED);
+	function getRejectedProposals(uint256 skip, uint256 limit) public view returns (Proposal[] memory) {
+		return _getProposals(ProposalStatus.REJECTED, skip, limit);
 	}
 
 	function getHotWallet() public view returns (address) {

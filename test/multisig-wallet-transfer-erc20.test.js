@@ -22,7 +22,7 @@ contract("MultisigWallet Transfer ERC 20 Token", function (accounts) {
   });
 
   it("should have 1 active proposal", async function () {
-    let activeProposals = await instance.getActiveProposals();
+    let activeProposals = await instance.getActiveProposals(0, 1);
     assert.equal(1, activeProposals.length, "active proposals should have 1 proposal");
     proposal = activeProposals[0];
   });
@@ -33,10 +33,10 @@ contract("MultisigWallet Transfer ERC 20 Token", function (accounts) {
   });
 
   it("should have executed status", async function () {
-    activeProposals = await instance.getActiveProposals();
+    activeProposals = await instance.getActiveProposals(0, 1);
     assert.equal(0, activeProposals.length, "active proposals should have 0 proposal");
 
-    const executedProposals = await instance.getExecutedProposals();
+    const executedProposals = await instance.getExecutedProposals(0, 1);
     assert.equal(1, executedProposals.length, "executed proposals should have 1 proposal");
     const [executedProposal] = executedProposals;
     assert.equal(executedProposal.id, proposal.id, "id should be " + proposal.id);

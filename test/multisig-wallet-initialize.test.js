@@ -8,7 +8,7 @@ contract("MultisigWallet Initialize", function (accounts) {
     assert.equal(expectedMemberCount, actualMemberCount, "member count should be " + expectedMemberCount);
 
     const expectedActiveProposalCount = 0;
-    const activeProposals = await instance.getActiveProposals();
+    const activeProposals = await instance.getActiveProposals(0, 1);
     assert.equal(expectedActiveProposalCount, activeProposals.length, "active proposals should be " + expectedActiveProposalCount);
 
     const expectedMinVotes = 2;

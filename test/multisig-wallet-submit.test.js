@@ -10,7 +10,7 @@ contract("MultisigWallet Submit Proposals", function (accounts) {
     const newMember = accounts[4];
     await instance.submitAddMemberProposal(newMember, { from: accounts[0] });
 
-    const activeProposals = await instance.getActiveProposals();
+    const activeProposals = await instance.getActiveProposals(0, 10);
     assert.equal(1, activeProposals.length, "active proposals should have 1 proposal");
 
     const proposal = activeProposals[0];
@@ -25,8 +25,8 @@ contract("MultisigWallet Submit Proposals", function (accounts) {
     const existingMember = accounts[3];
     await instance.submitRemoveMemberProposal(existingMember, { from: accounts[0] });
 
-    const activeProposals = await instance.getActiveProposals();
-    assert.equal(2, activeProposals.length, "active proposals should have 2 proposal");
+    const activeProposals = await instance.getActiveProposals(0, 10);
+    assert.equal(activeProposals.length, 2, "active proposals should have 2 proposal");
 
     const proposal = activeProposals[0];
     assert.equal(proposal.id, "1", "id should be 1");
@@ -40,8 +40,8 @@ contract("MultisigWallet Submit Proposals", function (accounts) {
     const newHotWallet = accounts[9];
     await instance.submitHotWalletProposal(newHotWallet, { from: accounts[0] });
 
-    const activeProposals = await instance.getActiveProposals();
-    assert.equal(3, activeProposals.length, "active proposals should have 3 proposal");
+    const activeProposals = await instance.getActiveProposals(0, 10);
+    assert.equal(activeProposals.length, 3, "active proposals should have 3 proposal");
 
     const proposal = activeProposals[0];
     assert.equal(proposal.id, "2", "id should be 2");
@@ -56,8 +56,8 @@ contract("MultisigWallet Submit Proposals", function (accounts) {
     const amount = '1';
     await instance.submitTransferProposal(fakeTokenAddress, amount, { from: accounts[0] });
 
-    const activeProposals = await instance.getActiveProposals();
-    assert.equal(4, activeProposals.length, "active proposals should have 4 proposal");
+    const activeProposals = await instance.getActiveProposals(0, 10);
+    assert.equal(activeProposals.length, 4, "active proposals should have 4 proposal");
 
     const proposal = activeProposals[0];
     assert.equal(proposal.id, "3", "id should be 3");

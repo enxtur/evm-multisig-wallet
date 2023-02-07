@@ -12,7 +12,7 @@ contract("MultisigWallet Remove Member", function (accounts) {
     await instance.submitRemoveMemberProposal(existingMember, { from: accounts[0] });
   });
   it("should have 1 active proposal", async function () {
-    let activeProposals = await instance.getActiveProposals();
+    let activeProposals = await instance.getActiveProposals(0, 1);
     proposal = activeProposals[0];
   });
   it("should execute when 2 of 3 member accepts", async function () {
@@ -20,10 +20,10 @@ contract("MultisigWallet Remove Member", function (accounts) {
     await instance.accept(proposal.id, { from: accounts[2] });
   });
   it("should have executed status", async function () {
-    activeProposals = await instance.getActiveProposals();
+    activeProposals = await instance.getActiveProposals(0, 1);
     assert.equal(0, activeProposals.length, "active proposals should have 0 proposal");
 
-    const executedProposals = await instance.getExecutedProposals();
+    const executedProposals = await instance.getExecutedProposals(0, 1);
     assert.equal(1, executedProposals.length, "executed proposals should have 1 proposal");
     const [executedProposal] = executedProposals;
     assert.equal(executedProposal.id, proposal.id, "id should be " + proposal.id);

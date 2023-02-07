@@ -12,7 +12,7 @@ contract("MultisigWallet Duplicate Vote", function (accounts) {
     await instance.submitHotWalletProposal(newHotWallet, { from: accounts[0] });
   });
   it("should have 1 active proposal", async function () {
-    let activeProposals = await instance.getActiveProposals();
+    let activeProposals = await instance.getActiveProposals(0, 1);
     proposal = activeProposals[0];
   });
   it("should not vote multiple", async function () {

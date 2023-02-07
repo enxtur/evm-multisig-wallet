@@ -39,7 +39,7 @@ contract TestMultisigWallet {
     MultisigWallet wallet = new MultisigWallet(new address[](0));
     wallet.submitTransferProposal(address(1), 1);
 
-    MultisigWallet.Proposal[] memory proposals  = wallet.getActiveProposals();
+    MultisigWallet.Proposal[] memory proposals  = wallet.getActiveProposals(0, 1);
 
     try wallet.accept(proposals[0].id) {
       assert(false);
@@ -52,7 +52,7 @@ contract TestMultisigWallet {
     MultisigWallet wallet = new MultisigWallet(new address[](0));
     wallet.submitTransferProposal(address(1), 1);
 
-    MultisigWallet.Proposal[] memory proposals  = wallet.getActiveProposals();
+    MultisigWallet.Proposal[] memory proposals  = wallet.getActiveProposals(0, 1);
 
     try wallet.reject(proposals[0].id) {
       assert(false);
